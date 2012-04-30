@@ -5,18 +5,24 @@ if test "$CHANGELOG" = ""; then CHANGELOG='History.md'; fi
 DATE=`date +'%Y-%m-%d'`
 HEAD="\nn.n.n / $DATE \n==================\n\n"
 
-if test "$1" = "--list"; then
+if test "$1" = "--show-hash" -o "$2" = "--show-hash"; then
+  SHOW_HASH=1
+  SHOW_HASH_FLAG="--show-hash"
+  SHOW_HASH_FORMAT=' %h'
+fi
+
+if test "$1" = "--list" -o "$2" = "--list"; then
   version=`git for-each-ref refs/tags --sort=-authordate --format='%(refname)' \
     --count=1 | sed 's/^refs\/tags\///'`
   if test -z "$version"; then
-    git log --pretty="format:  * %s"
+    git log --pretty="format:  *$SHOW_HASH_FORMAT %s"
   else
-    git log --pretty="format:  * %s" $version..
+    git log --pretty="format:  *$SHOW_HASH_FORMAT %s" $version..
   fi
 else
   tmp="/tmp/changelog"
   printf "$HEAD" > $tmp
-  git-changelog --list >> $tmp
+  git-changelog --list $SHOW_HASH_FLAG >> $tmp
   printf '\n' >> $tmp
   if [ -f $CHANGELOG ]; then cat $CHANGELOG >> $tmp; fi
   mv $tmp $CHANGELOG

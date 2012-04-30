@@ -425,6 +425,14 @@ $ git changelog --list
 * Initial commit
 ```
 
+Include git commit hashes with the `--show-hashes` flag:
+
+```bash
+$ git changelog --list --show-hash  
+  * 017aa49 Customize changelog header.
+  * b7300d9 Optionally output commit hash to changelog.
+```
+
 ## git-undo
 
 Remove the latest commit:
