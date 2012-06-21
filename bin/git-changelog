@@ -5,7 +5,7 @@ if test "$CHANGELOG" = ""; then CHANGELOG='History.md'; fi
 
 if test "$1" = "--by-date" -o "$2" = "--by-date" -o "$3" = "--by-date"; then
   DATE=`date +'%Y-%m-%d-%H%M'`
-  HEAD="Release v$DATE\n==========================\n\n"
+  HEAD="\nRelease v$DATE\n==========================\n\n"
   echo "Updated history with release v$DATE"
 else
   DATE=`date +'%Y-%m-%d'`
@@ -19,7 +19,7 @@ if test "$1" = "--show-hash" -o "$2" = "--show-hash"; then
 fi
 
 if test "$1" = "--list" -o "$2" = "--list"; then
-  version=`git for-each-ref refs/tags --sort=-authordate --format='%(refname)' \
+  version=`git for-each-ref refs/tags --sort=authordate --format='%(refname)' \
     --count=1 | sed 's/^refs\/tags\///'`
   if test -z "$version"; then
     git log --pretty="format:  *$SHOW_HASH_FORMAT %s"
